@@ -1,11 +1,11 @@
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Model extends Sequelize.Model {}
   Model.init(
     {
       email: {
         type: DataTypes.STRING,
-        unique: true,
+        unique: true, //唯一性校验
         validate: {
           isEmail: true,
         },
@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "User",
+      modelName: 'User',
     }
-  );
-  return Model;
-};
+  )
+  return Model
+}
