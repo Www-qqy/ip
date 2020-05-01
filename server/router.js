@@ -9,4 +9,5 @@ module.exports = (app) => {
   app.post('/users', UserController.register)
   app.put('/users/:id', UserController.update)
   app.delete('/users/:id', UserController.delete)
+  app.post('/users/login', UserController.login)
 }
