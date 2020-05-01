@@ -7,15 +7,17 @@
       class="register-form"
       label-width="150px"
     >
+      <div class="register-error">{{ this.error }}</div>
       <el-form-item prop="email" label="邮箱">
         <el-input v-model="registerForm.email"> </el-input>
       </el-form-item>
       <el-form-item prop="password" label="密码">
-        <el-input v-model="registerForm.password"> </el-input>
+        <el-input v-model="registerForm.password" type="password"> </el-input>
       </el-form-item>
 
       <el-form-item prop="comparePassword" label="确认密码">
-        <el-input v-model="registerForm.comparePassword"> </el-input>
+        <el-input v-model="registerForm.comparePassword" type="password">
+        </el-input>
       </el-form-item>
       <el-button
         :loading="loading"
@@ -35,9 +37,11 @@
 </template>
 
 <script>
+import UserService from '../../services/UserService'
 export default {
   data() {
     return {
+      error: '',
       loading: false,
       registerForm: {
         email: '',
@@ -76,14 +80,32 @@ export default {
   },
   methods: {
     register() {
-      this.$refs.registerForm.validate(valid => {
-        console.log(valid)
-
+      this.$refs.registerForm.validate(async valid => {
         if (valid) {
           // TODO:register api
           this.loading = true
+          this.error = ''
+          try {
+            const response = await UserService.register({
+              email: this.registerForm.email,
+              password: this.registerForm.password
+            })
+            if (response.data.code !== 200) {
+              this.error = response.data.error
+            } else {
+              // TODO：将用户信息和token保存到vuex
+              this.$router.push('/')
+            }
+            this.loading = false
+            console.log(response)
+          } catch (error) {}
         }
       })
+    },
+    async test() {
+      console.log('22222')
+      const user = await UserService.getUserById()
+      console.log(user)
     }
   }
 }
@@ -111,5 +133,8 @@ export default {
   font-size: 0.9rem;
   margin-top: 10px;
   color: #909399;
+}
+.register-error {
+  color: #f56c6c;
 }
 </style>

@@ -20,11 +20,12 @@ module.exports = {
       console.log(req.body)
       const user = await User.create(req.body)
       res.status(201).send({
+        code: 200,
         user,
         token: tokenSign(user),
       })
     } catch (error) {
-      res.status(400).send({
+      res.send({
         code: 400,
         error: '该邮箱已注册',
       })
@@ -101,6 +102,7 @@ module.exports = {
       console.log(isValidPassword, req.body.password)
       if (isValidPassword) {
         res.send({
+          code: 200,
           user: user.toJSON(),
           token: tokenSign(user),
         })
@@ -111,9 +113,9 @@ module.exports = {
         })
       }
     } catch (error) {
-      res.status(403).send({
+      res.send({
         code: 403,
-        error: '用户名或密码错误1',
+        error: '用户名或密码错误',
       })
     }
   }, //删除
