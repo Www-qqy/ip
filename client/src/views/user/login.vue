@@ -7,14 +7,15 @@
       class="login-form"
       label-width="150px"
     >
+      <div class="login-error">{{ this.error }}</div>
       <el-form-item prop="email" label="邮箱">
         <el-input v-model="loginForm.email"> </el-input>
       </el-form-item>
       <el-form-item prop="password" label="密码">
-        <el-input v-model="loginForm.password"> </el-input>
+        <el-input v-model="loginForm.password" type="password"> </el-input>
       </el-form-item>
-
       <el-button
+        :loading="loading"
         type="primary"
         native-type="submit"
         @click="login"
@@ -31,13 +32,15 @@
 </template>
 
 <script>
+import UserService from '../../services/UserService'
 export default {
   data() {
     return {
+      error: '',
+      loading: false,
       loginForm: {
         email: '',
-        password: '',
-        comparePassword: ''
+        password: ''
       },
       loginRules: {
         email: {
@@ -51,32 +54,38 @@ export default {
           required: true,
           message: '密码不能为空',
           trigger: 'blur'
-        },
-        comparePassword: {
-          type: 'string',
-          required: true,
-          trigger: 'blur',
-          validator: function(rule, value, callback) {
-            if (value === '') {
-              callback(new Error('请再次输入密码'))
-            } else if (value !== this.loginForm.password) {
-              callback(new Error('两次输入的密码不一致'))
-            } else {
-              callback()
-            }
-          }.bind(this)
         }
       }
     }
   },
   methods: {
     login() {
-      this.$refs.loginForm.validate(valid => {
-        console.log(valid)
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
           // TODO:login api
+          this.loading = true
+          this.error = ''
+          try {
+            const response = await UserService.login({
+              email: this.loginForm.email,
+              password: this.loginForm.password
+            })
+            if (response.data.code !== 200) {
+              this.error = response.data.error
+            } else {
+              // TODO：将用户信息和token保存到vuex
+              this.$router.push('/')
+            }
+            this.loading = false
+            console.log(response)
+          } catch (error) {}
         }
       })
+    },
+    async test() {
+      console.log('22222')
+      const user = await UserService.getUserById()
+      console.log(user)
     }
   }
 }
@@ -104,5 +113,8 @@ export default {
   font-size: 0.9rem;
   margin-top: 10px;
   color: #909399;
+}
+.login-error {
+  color: #f56c6c;
 }
 </style>
