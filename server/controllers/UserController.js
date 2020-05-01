@@ -1,4 +1,19 @@
 const { User } = require('../models')
+const config = require('../config')
+const JWT = require('jsonwebtoken')
+
+function tokenSign({ id, email }) {
+  try {
+    return JWT.sign(
+      { id, email },
+      config.token.secretOrPrivateKey,
+      config.token.options
+    )
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports = {
   async register(req, res) {
     try {
@@ -6,6 +21,7 @@ module.exports = {
       const user = await User.create(req.body)
       res.status(201).send({
         user,
+        token: tokenSign(user),
       })
     } catch (error) {
       res.status(400).send({
@@ -86,6 +102,7 @@ module.exports = {
       if (isValidPassword) {
         res.send({
           user: user.toJSON(),
+          token: tokenSign(user),
         })
       } else {
         res.status(403).send({
@@ -96,7 +113,7 @@ module.exports = {
     } catch (error) {
       res.status(403).send({
         code: 403,
-        error: '用户名或密码错误',
+        error: '用户名或密码错误1',
       })
     }
   }, //删除
