@@ -1,5 +1,8 @@
 <template>
   <div class="track">
+    <div class="track-login">
+      <div></div>
+    </div>
     <div class="echarts">
       <div
         :class="className"
@@ -593,27 +596,18 @@ export default {
 .track {
   height: 100vh;
   display: flex;
-  background-color: rgb(15, 2, 46);
+  flex-direction: column;
 }
-.track-info {
-  flex-grow: 2;
+.track-login {
+  height: 40px;
+  border: 1px solid red;
+  width: 100%;
 }
-.track-map {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .echarts {
   flex-grow: 6;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.track-route {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  background-color: rgb(15, 2, 46);
 }
 </style>
