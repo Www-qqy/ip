@@ -1,8 +1,10 @@
 <template>
   <div class="track">
     <div class="track-login">
-      <div></div>
+      <div class="el-icon-user"></div>
+      <div class="track-login-user">Administrator</div>
     </div>
+    <div class="track-echarts-info"></div>
     <div class="echarts">
       <div
         :class="className"
@@ -14,12 +16,14 @@
       <Search :placeholder="placeholder" :find="find" @listenSearch="searchItem" @listenAdd="addNew" @listenLeadIng="leadingItem"></Search>-->
       <!-- <div id="provinceChart" class="charts" ref="myEchart1" style="height:400px;"></div> -->
     </div>
+    <div class="track-info"></div>
   </div>
 </template>
 
 <script>
 import echarts from '../../node_modules/echarts'
 import '../../node_modules/echarts/map/js/world.js'
+
 //       import '../../node_modules/echarts/map/js/china.js' //      引入中国地图数据
 
 //       import Title from "./title";
@@ -368,16 +372,16 @@ export default {
               show: true,
               color: '#0bc7f3',
               period: 4, //     箭头指向速度，值越小速度越快
-              trailLength: 1, //     特效尾迹长度[0,1]值越大，尾迹越长重
+              trailLength: 0.1, //     特效尾迹长度[0,1]值越大，尾迹越长重
               symbol: 'arrow', //     箭头图标
               symbolSize: 2.5 //     图标大小
             },
             lineStyle: {
               normal: {
                 color: '#0bc7f3',
-                width: 1, //     尾迹线条宽度
-                opacity: 0, //     尾迹线条透明度
-                curveness: 0.3 //     尾迹线条曲直度
+                width: 0, //     尾迹线条宽度
+                opacity: 0.1, //     尾迹线条透明度
+                curveness: 0.1 //     尾迹线条曲直度
               }
             },
             data: convertData(item[1])
@@ -387,18 +391,18 @@ export default {
             type: 'lines',
             zlevel: 2,
             effect: {
-              show: true,
-              color: '#FF0000',
-              period: 4, //     箭头指向速度，值越小速度越快
+              show: false,
+              color: '#FF6A6A',
+              period: 9, //     箭头指向速度，值越小速度越快
               trailLength: 0.5, //     特效尾迹长度[0,1]值越大，尾迹越长重
               symbol: 'arrow', //     箭头图标
               symbolSize: 2.5 //     图标大小
             },
             lineStyle: {
               normal: {
-                color: '#FF0000',
+                color: '#FF6A6A',
                 width: 1, //     尾迹线条宽度
-                opacity: 0.2, //     尾迹线条透明度
+                opacity: 0, //     尾迹线条透明度
                 curveness: 0.3 //     尾迹线条曲直度
               }
             },
@@ -410,9 +414,9 @@ export default {
             zlevel: 2,
             rippleEffect: {
               //     涟漪特效
-              period: 1, //     动画时间，值越小速度越快
+              period: 5, //     动画时间，值越小速度越快
               brushType: 'stroke', //     波纹绘制方式 stroke, fill
-              scale: 4 //     波纹圆环最大限制，值越大波纹越大
+              scale: 6 //     波纹圆环最大限制，值越大波纹越大
             },
             label: {
               normal: {
@@ -428,7 +432,7 @@ export default {
             },
             symbol: 'circle',
             symbolSize: function(val) {
-              return 8 + val[2] / 1000 //     圆环大小
+              return 4 + val[2] / 1000 //     圆环大小
             },
             itemStyle: {
               normal: {
@@ -459,7 +463,7 @@ export default {
             label: {
               normal: {
                 show: true,
-                color: 'red', //     上海文字
+                color: '#942b40', //     上海文字
                 position: 'right',
                 formatter: '{b}'
               },
@@ -473,7 +477,7 @@ export default {
             itemStyle: {
               normal: {
                 show: true,
-                color: 'red' //     上海图标
+                color: '#942b40' //     上海图标
               },
               emphasis: {
                 show: true,
@@ -514,21 +518,22 @@ export default {
         },
         visualMap: {
           //     图例值控制
-          show: false,
+          show: false, // 值
           type: 'piecewise',
+          color: 'white',
           pieces: [
             {
               max: 80,
-              color: '#5bc1c9' //     红色图标及文字
+              color: '#947734' //     红色图标及文字
             },
             {
               min: 80,
               max: 120,
-              color: 'yellow'
+              color: '#39a793'
             },
             {
               min: 120,
-              color: 'green'
+              color: '#94533e'
             }
           ],
           calculable: true
@@ -594,20 +599,50 @@ export default {
   box-sizing: border-box;
 }
 .track {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 .track-login {
-  height: 40px;
-  border: 1px solid red;
+  height: 60px;
+  position: fixed;
   width: 100%;
+  background-color: rgb(7, 10, 15);
+  z-index: 102;
+  line-height: 60px;
+}
+.track-echarts-info {
+  border: 1px solid rgb(196, 83, 83);
+  height: 50px;
+  z-index: 101;
+  width: 80px;
 }
 .echarts {
-  flex-grow: 6;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(15, 2, 46);
+  height: 100vh;
+  background-image: url('../assets/map-bg.jpg');
+}
+.track-info {
+  height: 100vh;
+}
+.track-login-user {
+  width: 140px;
+  color: rgba(255, 255, 255, 0.685);
+
+  float: right;
+}
+.el-icon-user {
+  color: rgba(255, 255, 255, 0.651);
+  position: absolute;
+  float: right;
+  right: 130px;
+  top: 50%;
+  transform: translate(0, -50%);
+  background-color: rgb(11, 51, 94, 0.8);
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
