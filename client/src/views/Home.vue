@@ -537,7 +537,7 @@ export default {
           pieces: [
             {
               max: 80,
-              color: '#947734' //     红色图标及文字
+              color: '#947734' //     huang色图标及文字
             },
             {
               min: 80,
