@@ -4,19 +4,32 @@
       <div class="el-icon-user"></div>
       <div class="track-login-user">Administrator</div>
     </div>
-    <div class="track-echarts-info"></div>
-    <div class="echarts">
-      <div
-        :class="className"
-        :id="id"
-        :style="{ height: height, width: width }"
-        ref="myEchart"
-      ></div>
-      <!-- <Title :title="title"></Title>
-      <Search :placeholder="placeholder" :find="find" @listenSearch="searchItem" @listenAdd="addNew" @listenLeadIng="leadingItem"></Search>-->
-      <!-- <div id="provinceChart" class="charts" ref="myEchart1" style="height:400px;"></div> -->
+    <div class="track-echarts">
+      <div class="track-echarts-info">
+        <div class="track-echarts-info-red track-echarts-color">
+          <div class="track-echarts-info-red-img track-echarts-color-img"></div>
+          <div class="track-echarts-info-red-text">>12000</div>
+        </div>
+        <div class="track-echarts-info-yellow track-echarts-color">
+          <div class="track-echarts-info-yellow-img track-echarts-color-img"></div>
+          <div class="track-echarts-info-yellow-text">6000~12000</div>
+        </div>
+
+        <div class="track-echarts-info-green track-echarts-color">
+          <div class="track-echarts-info-green-img track-echarts-color-img"></div>
+          <div class="track-echarts-info-green-text">&lt;6000</div>
+        </div>
+      </div>
+      <div class="echarts">
+        <div :class="className" :id="id" :style="{ height: height, width: width }" ref="myEchart"></div>
+        <!-- <Title :title="title"></Title>
+        <Search :placeholder="placeholder" :find="find" @listenSearch="searchItem" @listenAdd="addNew" @listenLeadIng="leadingItem"></Search>-->
+        <!-- <div id="provinceChart" class="charts" ref="myEchart1" style="height:400px;"></div> -->
+      </div>
     </div>
-    <div class="track-info"></div>
+    <div class="track-info">
+      <img class="info-bg" src="../assets/info-bg.jpg" alt />
+    </div>
   </div>
 </template>
 
@@ -41,11 +54,11 @@ export default {
     },
     width: {
       type: String,
-      default: '200%'
+      default: '240%'
     },
     height: {
       type: String,
-      default: '100%'
+      default: '120%'
     }
   },
   data() {
@@ -599,20 +612,55 @@ export default {
   box-sizing: border-box;
 }
 .track {
+  border: 1px solid rgb(7, 10, 15);
+  background-color: rgb(7, 10, 15);
 }
 .track-login {
   height: 60px;
   position: fixed;
+  top: 0;
   width: 100%;
-  background-color: rgb(7, 10, 15);
+  background-color: rgba(7, 10, 10, 0.3);
   z-index: 102;
   line-height: 60px;
 }
+.track-echarts {
+  position: relative;
+}
 .track-echarts-info {
-  border: 1px solid rgb(196, 83, 83);
-  height: 50px;
+  height: 100px;
   z-index: 101;
-  width: 80px;
+  width: 110px;
+  position: absolute;
+  bottom: 9%;
+  left: 1%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.track-echarts-color {
+  height: 30px;
+  line-height: 30px;
+  display: flex;
+
+  color: rgb(141, 141, 141);
+  font-size: 12px;
+}
+.track-echarts-color-img {
+  width: 30px;
+  height: 16px;
+  border-radius: 5px;
+  margin-top: 7px;
+  margin-right: 20px;
+}
+.track-echarts-info-red-img {
+  background-color: #94533e;
+}
+.track-echarts-info-yellow-img {
+  background-color: #947734;
+}
+.track-echarts-info-green-img {
+  background-color: #39a793;
 }
 .echarts {
   display: flex;
@@ -620,15 +668,20 @@ export default {
   justify-content: center;
   height: 100vh;
   background-image: url('../assets/map-bg.jpg');
+  margin-top: 50px;
 }
 .track-info {
   height: 100vh;
+  width: 100%;
 }
 .track-login-user {
   width: 140px;
   color: rgba(255, 255, 255, 0.685);
 
   float: right;
+}
+.info-bg {
+  width: 100%;
 }
 .el-icon-user {
   color: rgba(255, 255, 255, 0.651);
