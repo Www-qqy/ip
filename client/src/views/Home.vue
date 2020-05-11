@@ -8,16 +8,16 @@
       <div class="track-echarts-info">
         <div class="track-echarts-info-red track-echarts-color">
           <div class="track-echarts-info-red-img track-echarts-color-img"></div>
-          <div class="track-echarts-info-red-text">>12000</div>
+          <div class="track-echarts-info-red-text">>120</div>
         </div>
         <div class="track-echarts-info-yellow track-echarts-color">
           <div class="track-echarts-info-yellow-img track-echarts-color-img"></div>
-          <div class="track-echarts-info-yellow-text">6000~12000</div>
+          <div class="track-echarts-info-yellow-text">80~120</div>
         </div>
 
         <div class="track-echarts-info-green track-echarts-color">
           <div class="track-echarts-info-green-img track-echarts-color-img"></div>
-          <div class="track-echarts-info-green-text">&lt;6000</div>
+          <div class="track-echarts-info-green-text">&lt;80</div>
         </div>
       </div>
       <div class="echarts">
@@ -27,6 +27,7 @@
         <!-- <div id="provinceChart" class="charts" ref="myEchart1" style="height:400px;"></div> -->
       </div>
     </div>
+    <div class="track-button-to-info"></div>
     <div class="track-info">
       <img class="info-bg" src="../assets/info-bg.jpg" alt />
     </div>
@@ -524,8 +525,13 @@ export default {
             var res = ''
             var name = params.name
             var value = params.value[params.seriesIndex + 1]
+            var add = 'hahaha'
             res =
-              "<span style='color:#fff;'>" + name + '</span><br/>数据：' + value
+              "<span style='color:#fff;'>" +
+              name +
+              '</span><br/>数据：' +
+              value +
+              add
             return res
           }
         },
@@ -537,12 +543,12 @@ export default {
           pieces: [
             {
               max: 80,
-              color: '#947734' //     huang色图标及文字
+              color: '#39a793' //     huang色图标及文字
             },
             {
               min: 80,
               max: 120,
-              color: '#39a793'
+              color: '#947734'
             },
             {
               min: 120,
