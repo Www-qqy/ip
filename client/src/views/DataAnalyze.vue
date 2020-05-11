@@ -309,7 +309,7 @@ export default {
           visualMap: [
             {
               dimension: 0,
-              left: 0, // 左下角高低柱
+              left: '30', // 左下角高低柱
               bottom: '5%',
               itemWidth: 12,
               min: data[i].data[9].value[0],
@@ -429,7 +429,7 @@ export default {
             left: 'center',
             top: 60,
             textStyle: {
-              fontSize: 25,
+              fontSize: 35,
               color: '#04888f'
             }
           },
@@ -441,7 +441,7 @@ export default {
             }
           },
           grid: {
-            left: '5%', // 左下角图表位置
+            left: '8%', // 左下角图表位置
             right: '30%',
             top: '70%',
             bottom: '5%',
