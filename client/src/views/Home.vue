@@ -27,7 +27,9 @@
         <!-- <div id="provinceChart" class="charts" ref="myEchart1" style="height:400px;"></div> -->
       </div>
     </div>
-    <div class="track-button-to-info"></div>
+    <div class="track-button-to-info">
+      <img class="track-button" src="../assets/track-button.png" alt />
+    </div>
     <div class="track-info">
       <img class="info-bg" src="../assets/info-bg.jpg" alt />
     </div>
@@ -162,10 +164,12 @@ export default {
         [
           {
             name: '尼日利亚',
-            value: randomData()
+            value: randomData(),
+            ip: '193.26.31.104'
           },
           {
-            name: '上海'
+            name: '上海',
+            ip: '192.42.26.100'
           }
         ],
         [
@@ -620,6 +624,7 @@ export default {
 .track {
   border: 1px solid rgb(7, 10, 15);
   background-color: rgb(7, 10, 15);
+  position: relative;
 }
 .track-login {
   height: 60px;
@@ -643,6 +648,11 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.track-button {
+  height: 80px;
+  position: absolute;
+  bottom: 0;
 }
 .track-echarts-color {
   height: 30px;
