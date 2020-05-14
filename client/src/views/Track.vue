@@ -4,6 +4,21 @@
       <div class="el-icon-user"></div>
       <div class="track-login-user">Administrator</div>
     </div>
+    <el-button
+      type="primary"
+      icon="el-icon-arrow-left"
+      class="track-lr-button track-left-button"
+      circle
+      @click="trackToDataInfo"
+    ></el-button>
+    <el-button
+      type="primary"
+      icon="el-icon-arrow-right"
+      class="track-lr-button track-right-button"
+      circle
+      @click="trackToDataAnalyze"
+    ></el-button>
+
     <div class="track-echarts">
       <div class="track-echarts-info">
         <div class="track-echarts-info-red track-echarts-color">
@@ -26,12 +41,6 @@
         <Search :placeholder="placeholder" :find="find" @listenSearch="searchItem" @listenAdd="addNew" @listenLeadIng="leadingItem"></Search>-->
         <!-- <div id="provinceChart" class="charts" ref="myEchart1" style="height:400px;"></div> -->
       </div>
-    </div>
-    <div class="track-button-to-info">
-      <img class="track-button" src="../assets/track-button.png" alt />
-    </div>
-    <div class="track-info">
-      <img class="info-bg" src="../assets/info-bg.jpg" alt />
     </div>
   </div>
 </template>
@@ -85,6 +94,12 @@ export default {
     this.chart = null
   },
   methods: {
+    trackToDataInfo() {
+      this.$router.push('/data-info')
+    },
+    trackToDataAnalyze() {
+      this.$router.push('/data-analyze')
+    },
     initChart() {
       this.chart = echarts.init(this.$refs.myEchart)
       window.onresize = echarts.init(this.$refs.myEchart).resize
@@ -625,6 +640,34 @@ export default {
   border: 1px solid rgb(7, 10, 15);
   background-color: rgb(7, 10, 15);
   position: relative;
+}
+.track-lr-button {
+  position: absolute;
+  top: 46%;
+  transform: translate(0, -50%);
+  z-index: 106;
+  width: 80px;
+  height: 80px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+}
+.track-left-button {
+  left: 1%;
+}
+.track-right-button {
+  right: 1%;
+}
+.el-button--primary:focus .el-button--primary:hover {
+  background: #02617e;
+}
+/* deep*2 */
+/deep/ .el-icon-arrow-left {
+  font-size: 34px;
+  color: #f7f7f7;
+}
+/deep/ .el-icon-arrow-right {
+  font-size: 34px;
+  color: #f7f7f7;
 }
 .track-login {
   height: 60px;

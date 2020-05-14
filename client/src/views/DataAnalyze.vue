@@ -4,6 +4,13 @@
       <div class="el-icon-user"></div>
       <div class="map-login-user">Administrator</div>
     </div>
+    <el-button
+      type="primary"
+      icon="el-icon-arrow-left"
+      class="analyze-lr-button analyze-left-button"
+      circle
+      @click="analyzeToTrack"
+    ></el-button>
     <div class="map-echarts">
       <div class="echarts">
         <div :class="className" :id="id" :style="{ height: height, width: width }" ref="myEchart"></div>
@@ -53,6 +60,9 @@ export default {
     this.chart = null
   },
   methods: {
+    analyzeToTrack() {
+      this.$router.push('/track')
+    },
     initChart() {
       this.chart = echarts.init(this.$refs.myEchart)
       window.onresize = echarts.init(this.$refs.myEchart).resize
@@ -435,7 +445,7 @@ export default {
           },
           tooltip: {
             formatter: function(params) {
-              if ('value' in params.data) {
+              if (params.data && 'value' in params.data) {
                 return params.data.value[1] + ': ' + params.data.value[0]
               }
             }
@@ -548,6 +558,31 @@ export default {
   border-radius: 5px;
   margin-top: 7px;
   margin-right: 20px;
+}
+.analyze-lr-button {
+  position: absolute;
+  top: 46%;
+  transform: translate(0, -50%);
+  z-index: 106;
+  width: 80px;
+  height: 80px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+}
+.analyze-left-button {
+  left: 1%;
+}
+
+/* /deep/ .el-button--primary:focus .el-button--primary:hover {
+  background: #02617e;
+} */
+/deep/ .el-icon-arrow-left {
+  font-size: 34px;
+  color: #f7f7f7;
+}
+/deep/ .el-icon-arrow-right {
+  font-size: 34px;
+  color: #f7f7f7;
 }
 .map-echarts-info-red-img {
   background-color: #94533e;
