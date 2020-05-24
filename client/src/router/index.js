@@ -12,12 +12,12 @@ const routes = [
   },
   {
     path: '/track',
-    name: 'track',
+    name: 'Track',
     component: () => import('../views/Track.vue')
   },
   {
     path: '/user/login',
-    name: 'login',
+    name: 'Login',
     component: () => import('../views/User/Login.vue')
   },
   {
@@ -34,6 +34,16 @@ const routes = [
     path: '/data-info',
     name: 'DataInfo',
     component: () => import('../views/DataInfo')
+  },
+  {
+    path: '/normal-track',
+    name: 'NormalTrack',
+    component: () => import('../views/NormalTrack')
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../views/Admin')
   }
 ]
 

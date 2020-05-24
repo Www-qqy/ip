@@ -152,7 +152,8 @@ export default {
           try {
             const response = await UserService.register({
               email: this.registerForm.email,
-              password: this.registerForm.password
+              password: this.registerForm.password,
+              role: 'normal-user'
             })
             if (response.data.code !== 200) {
               this.error = response.data.error

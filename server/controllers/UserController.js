@@ -17,8 +17,9 @@ function tokenSign({ id, email }) {
 module.exports = {
   async register(req, res) {
     try {
-      console.log(req.body)
+      console.log('1111', req.body)
       const user = await User.create(req.body)
+      console.log('2222', req.body)
       res.status(201).send({
         code: 200,
         user,
@@ -96,6 +97,7 @@ module.exports = {
       const user = await User.findOne({
         where: {
           email: req.body.email,
+          role: req.body.role, // 自动封装到了req.body里
         },
       })
       let isValidPassword = user.comparePassword(req.body.password)
@@ -120,3 +122,4 @@ module.exports = {
     }
   }, //删除
 }
+// 接受前端的请求

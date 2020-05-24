@@ -31,7 +31,10 @@ module.exports = (sequelize, DataTypes) => {
           len: [8, 40],
         },
       },
-    },
+      role: {
+        type: DataTypes.STRING,
+      },
+    }, // 返回的数据库表中的需要的字段
     {
       hooks: {
         afterValidate: hashPassword,

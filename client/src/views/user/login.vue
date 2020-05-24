@@ -22,13 +22,18 @@
         <el-form-item prop="password" label="密码">
           <el-input v-model="loginForm.password" type="password"></el-input>
         </el-form-item>
+        <el-radio-group v-model="loginForm.role">
+          <el-radio label="normal-user">普通用户</el-radio>
+          <el-radio label="professional-user">专业用户</el-radio>
+          <el-radio label="admin">管理员</el-radio>
+        </el-radio-group>
         <el-button
           :loading="loading"
           type="primary"
           native-type="submit"
           @click="login"
           style="width:100%"
-        >登录</el-button>
+        >登录{{whatRadio}}</el-button>
         <div class="login-info">
           如果未注册账号请
           <router-link :to="{ name: 'register' }">点击注册</router-link>
@@ -51,7 +56,8 @@ export default {
       loading: false,
       loginForm: {
         email: '',
-        password: ''
+        password: '',
+        role: ''
       },
       loginRules: {
         email: {
@@ -67,6 +73,12 @@ export default {
           trigger: 'blur'
         }
       }
+    }
+  },
+  computed: {
+    whatRadio() {
+      console.log(this.loginForm.role)
+      return this.loginForm.role
     }
   },
   created() {
@@ -124,13 +136,41 @@ export default {
           try {
             const response = await UserService.login({
               email: this.loginForm.email,
-              password: this.loginForm.password
+              password: this.loginForm.password,
+              role: this.loginForm.role
             })
             if (response.data.code !== 200) {
               this.error = response.data.error
             } else {
               // TODO：将用户信息和token保存到vuex
-              this.$router.push('/track')
+              if (this.loginForm.role === 'admin') {
+                this.$router.push({
+                  path: '/admin',
+                  name: 'Admin',
+                  params: {
+                    email: this.loginForm.email,
+                    role: this.loginForm.role
+                  }
+                })
+              } else if (this.loginForm.role === 'normal-user') {
+                this.$router.push({
+                  path: '/normal-track',
+                  name: 'NormalTrack',
+                  params: {
+                    email: this.loginForm.email,
+                    role: this.loginForm.role
+                  }
+                })
+              } else {
+                this.$router.push({
+                  path: '/track',
+                  name: 'Track',
+                  params: {
+                    email: this.loginForm.email,
+                    role: this.loginForm.role
+                  }
+                })
+              }
             }
             this.loading = false
             console.log(response)
