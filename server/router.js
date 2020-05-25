@@ -1,5 +1,6 @@
 const UserController = require('./controllers/UserController')
 const AuthenticatePolicy = require('./policies/AuthenticatePolicy')
+const AttackPointController = require('./controllers/AttackPointController')
 module.exports = (app) => {
   // app.post('/user/login',UserController.login)
   // app.get('/api', (req, res) => {
@@ -23,4 +24,7 @@ module.exports = (app) => {
   app.put('/users/:id', UserController.update)
   app.delete('/users/:id', UserController.delete)
   app.post('/users/login', UserController.login)
+  app.post('/attack-point', AttackPointController.enter)
+  app.get('/attack-point/:id', AttackPointController.getAttackPointById)
+  app.put('/attack-point/:id', AttackPointController.update)
 }

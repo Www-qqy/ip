@@ -5,7 +5,7 @@
         <div class="track-echarts-info-red-img track-echarts-color-img"></div>
         <div class="track-echarts-info-red-text">>120</div>
       </div>
-      <div class="track-echarts-info-yellow track-echarts-color" @click="getTwoAttackPoint">
+      <div class="track-echarts-info-yellow track-echarts-color">
         <div class="track-echarts-info-yellow-img track-echarts-color-img"></div>
         <div class="track-echarts-info-yellow-text">80~120</div>
       </div>
@@ -17,6 +17,9 @@
     </div>
     <div class="echarts">
       <div :class="className" :id="id" :style="{ height: height, width: width }" ref="myEchart"></div>
+      <!-- <Title :title="title"></Title>
+      <Search :placeholder="placeholder" :find="find" @listenSearch="searchItem" @listenAdd="addNew" @listenLeadIng="leadingItem"></Search>-->
+      <!-- <div id="provinceChart" class="charts" ref="myEchart1" style="height:400px;"></div> -->
     </div>
   </div>
 </template>
@@ -47,9 +50,6 @@ export default {
   },
   data() {
     return {
-      attackedId: 0,
-      attackId: 0,
-      attackForm: [],
       error: '',
       loading: false,
       attackPointForm: {
@@ -69,10 +69,6 @@ export default {
     this.$nextTick(() => {
       this.initChart()
     })
-    // setInterval(function() {
-    //   alert('aaaaaaaaa')
-    // }, 200)
-    // 1000为1秒钟
     //       this.chinaConfigure();
   },
   befoblueestroy() {
@@ -103,40 +99,6 @@ export default {
         console.log(response)
       } catch (error) {}
     },
-    randomId() {
-      this.attackId = Math.floor(Math.random() * 6) + 1
-      this.attackedId = Math.floor(Math.random() * 6) + 1
-      while (this.attackId === this.attackedId) {
-        this.attackedId = Math.floor(Math.random() * 6) + 1
-      }
-    },
-    getTwoAttackPoint() {
-      this.randomId()
-      console.log(this.attackId, this.attackedId, '随机数')
-      this.getAttackPointById(this.attackId)
-      this.getAttackPointById(this.attackedId)
-      console.log('俩数据', this.attackForm)
-    },
-    async getAttackPointById(id) {
-      try {
-        const response = await AttackPointService.getAttackPointById(id)
-        console.log('trying', response.code, 'kkk', id === this.attackedId)
-        if (response.code === 201) {
-          console.log('enter succeed!', response)
-          if (id === this.attackedId) {
-            this.attackForm[1] = response.attackPoint
-          } else {
-            this.attackForm[0] = response.attackPoint
-          }
-        } else {
-          // TODO：将用户信息和token保存到vuex
-          this.error = response.data.error
-          console.log('error!!', this.error)
-        }
-        this.loading = false
-        console.log(response)
-      } catch (error) {}
-    },
     trackToDataInfo() {
       this.$router.push('/data-info')
     },
@@ -144,7 +106,6 @@ export default {
       this.$router.push('/data-analyze')
     },
     initChart() {
-      this.getTwoAttackPoint()
       this.chart = echarts.init(this.$refs.myEchart)
       window.onresize = echarts.init(this.$refs.myEchart).resize
       var convertData = function(data) {
@@ -167,7 +128,26 @@ export default {
         }
         return res
       }
-
+      // var convertData2 = function(data) {
+      //   var res = []
+      //   for (var i = 0; i < data.length; i++) {
+      //     var dataItem = data[i]
+      //     var fromCoord = geoCoordMap[dataItem[1].name]
+      //     var toCoord = geoCoordMap[dataItem[0].name]
+      //     if (fromCoord && toCoord) {
+      //       res.push([
+      //         {
+      //           coord: fromCoord,
+      //           value: dataItem[0].value
+      //         },
+      //         {
+      //           coord: toCoord
+      //         }
+      //       ])
+      //     }
+      //   }
+      //   return res
+      // }
       //       把配置和数据放这里
       var series = []
       function randomData() {
@@ -444,6 +424,28 @@ export default {
             },
             data: convertData(item[1])
           },
+          // {
+          //   name: '攻击线2',
+          //   type: 'lines',
+          //   zlevel: 2,
+          //   effect: {
+          //     show: false,
+          //     color: '#FF6A6A',
+          //     period: 9, //     箭头指向速度，值越小速度越快
+          //     trailLength: 0.5, //     特效尾迹长度[0,1]值越大，尾迹越长重
+          //     symbol: 'arrow', //     箭头图标
+          //     symbolSize: 2.5 //     图标大小
+          //   },
+          //   lineStyle: {
+          //     normal: {
+          //       color: '#FF6A6A',
+          //       width: 1, //     尾迹线条宽度
+          //       opacity: 0, //     尾迹线条透明度
+          //       curveness: 0.3 //     尾迹线条曲直度
+          //     }
+          //   },
+          //   data: convertData2(item[1])
+          // },
           {
             type: 'effectScatter',
             coordinateSystem: 'geo',

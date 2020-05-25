@@ -15,5 +15,10 @@ export default {
   admin() {},
   enter(data) {
     return request.post('/attack-point', data)
+  },
+  async getAttackPointById(id) {
+    var path = '/attack-point/' + id
+    const response = await request.get(path)
+    return response.data
   }
 }
