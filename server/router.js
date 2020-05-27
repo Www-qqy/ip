@@ -30,4 +30,5 @@ module.exports = (app) => {
   app.get('/attack-point/:id', AttackPointController.getAttackPointById)
   app.put('/attack-point/:id', AttackPointController.update)
   app.post('/attack', AttackController.enter)
+  app.get('/attack/attack', AttackController.getAttackByAttack)
 }

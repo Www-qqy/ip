@@ -1,9 +1,5 @@
 <template>
   <div class="map">
-    <div class="map-login">
-      <div class="el-icon-user"></div>
-      <div class="map-login-user">Administrator</div>
-    </div>
     <el-button
       type="primary"
       icon="el-icon-arrow-left"
@@ -72,22 +68,24 @@ export default {
       //   var svg ='path://     M32.597,9.782 L30.475,11.904 C30.085,12.294 29.452,12.294 29.061,11.904 C28.671,11.513 28.671,10.880 29.061,10.489 L31.182,8.368 C31.573,7.978 32.206,7.978 32.597,8.368 C32.987,8.759 32.987,9.392 32.597,9.782 ZM30.000,30.500 C30.000,31.328 29.329,32.000 28.500,32.000 L5.500,32.000 C4.672,32.000 4.000,31.328 4.000,30.500 C4.000,29.672 4.672,29.000 5.500,29.000 L8.009,29.000 L8.009,18.244 C8.009,13.139 12.034,9.000 17.000,9.000 C21.966,9.000 25.992,13.139 25.992,18.244 L25.992,29.000 L28.500,29.000 C29.329,29.000 30.000,29.672 30.000,30.500 ZM17.867,14.444 L13.000,22.000 L17.000,22.000 L17.133,26.556 L21.000,20.000 L17.000,20.000 L17.867,14.444 ZM25.221,6.327 C25.033,6.846 24.459,7.113 23.940,6.924 C23.421,6.735 23.153,6.162 23.342,5.643 L24.368,2.823 C24.557,2.304 25.131,2.037 25.650,2.226 C26.169,2.415 26.436,2.989 26.248,3.508 L25.221,6.327 ZM17.000,5.000 C16.448,5.000 16.000,4.552 16.000,4.000 L16.000,1.000 C16.000,0.448 16.448,0.000 17.000,0.000 C17.552,0.000 18.000,0.448 18.000,1.000 L18.000,4.000 C18.000,4.552 17.552,5.000 17.000,5.000 ZM10.028,7.197 C9.509,7.386 8.935,7.118 8.746,6.599 L7.720,3.780 C7.532,3.261 7.799,2.687 8.318,2.498 C8.837,2.309 9.411,2.577 9.600,3.096 L10.626,5.915 C10.815,6.434 10.547,7.008 10.028,7.197 ZM3.354,12.268 L1.232,10.146 C0.842,9.756 0.842,9.123 1.232,8.732 C1.623,8.342 2.256,8.342 2.646,8.732 L4.768,10.854 C5.158,11.244 5.158,11.877 4.768,12.268 C4.377,12.658 3.744,12.658 3.354,12.268 Z'
       var data = [
         {
-          time: '3.16',
+          time: '5.14',
           data: [
-            { name: 'China', value: [81116, '中国'] },
-            { name: 'Italy', value: [24747, '意大利'] },
-            { name: 'Iran', value: [14991, '伊朗'] },
+            { name: 'United States', value: [1678, '美国'] },
+
+            { name: 'Mexico', value: [24747, '墨西哥'] },
+            { name: 'Canada', value: [14991, '加拿大'] },
             { name: 'Corea', value: [8236, '韩国'] },
+            { name: 'China', value: [81116, '中国'] },
             { name: 'Spain', value: [7753, '西班牙'] },
             { name: 'France', value: [5380, '法国'] },
             { name: 'Germany', value: [4838, '德国'] },
-            { name: 'United States', value: [1678, '美国'] },
+
             { name: 'United Kingdom', value: [1395, '英国'] },
             { name: 'Japan', value: [814, '日本'] }
           ]
         },
         {
-          time: '3.17',
+          time: '5.15',
           data: [
             { name: 'China', value: [81151, '中国'] },
             { name: 'Italy', value: [27980, '意大利'] },
@@ -102,7 +100,7 @@ export default {
           ]
         },
         {
-          time: '3.18',
+          time: '5.16',
           data: [
             { name: 'China', value: [81235, '中国'] },
             { name: 'Italy', value: [31506, '意大利'] },
@@ -117,7 +115,7 @@ export default {
           ]
         },
         {
-          time: '3.19',
+          time: '5.17',
           data: [
             { name: 'China', value: [81300, '中国'] },
             { name: 'Italy', value: [35713, '意大利'] },
@@ -132,7 +130,7 @@ export default {
           ]
         },
         {
-          time: '3.20',
+          time: '5.18',
           data: [
             { name: 'China', value: [81416, '中国'] },
             { name: 'Italy', value: [47021, '意大利'] },
@@ -147,7 +145,7 @@ export default {
           ]
         },
         {
-          time: '3.21',
+          time: '5.19',
           data: [
             { name: 'China', value: [81498, '中国'] },
             { name: 'Italy', value: [53578, '意大利'] },
@@ -162,7 +160,7 @@ export default {
           ]
         },
         {
-          time: '3.22',
+          time: '5.20',
           data: [
             { name: 'China', value: [81600, '中国'] },
             { name: 'Italy', value: [53578, '意大利'] },
@@ -177,7 +175,7 @@ export default {
           ]
         },
         {
-          time: '3.23',
+          time: '5.21',
           data: [
             { name: 'China', value: [81747, '中国'] },
             { name: 'Italy', value: [59138, '意大利'] },
@@ -192,7 +190,7 @@ export default {
           ]
         },
         {
-          time: '3.24',
+          time: '5.22',
           data: [
             { name: 'China', value: [81847, '中国'] },
             { name: 'Italy', value: [63927, '意大利'] },
@@ -207,7 +205,7 @@ export default {
           ]
         },
         {
-          time: '3.25',
+          time: '5.23',
           data: [
             { name: 'China', value: [81960, '中国'] },
             { name: 'Italy', value: [69176, '意大利'] },
@@ -222,7 +220,7 @@ export default {
           ]
         },
         {
-          time: '3.26',
+          time: '5.24',
           data: [
             { name: 'China', value: [82078, '中国'] },
             { name: 'Italy', value: [74386, '意大利'] },
@@ -237,7 +235,7 @@ export default {
           ]
         },
         {
-          time: '3.27',
+          time: '5.25',
           data: [
             { name: 'China', value: [82213, '中国'] },
             { name: 'Italy', value: [80539, '意大利'] },
@@ -252,7 +250,7 @@ export default {
           ]
         },
         {
-          time: '3.28',
+          time: '5.26',
           data: [
             { name: 'Italy', value: [86498, '意大利'] },
             { name: 'United States', value: [85228, '美国'] },
@@ -267,7 +265,7 @@ export default {
           ]
         },
         {
-          time: '3.29',
+          time: '5.27',
           data: [
             { name: 'United States', value: [103321, '美国'] },
             { name: 'Italy', value: [92472, '意大利'] },
@@ -282,7 +280,7 @@ export default {
           ]
         },
         {
-          time: '3.30',
+          time: '5.28',
           data: [
             { name: 'United States', value: [122653, '美国'] },
             { name: 'Italy', value: [97689, '意大利'] },
@@ -297,7 +295,7 @@ export default {
           ]
         },
         {
-          time: '3.31',
+          time: '5.29',
           data: [
             { name: 'United States', value: [140640, '美国'] },
             { name: 'Italy', value: [101739, '意大利'] },
@@ -434,7 +432,7 @@ export default {
           },
           backgroundColor: 'rgba(255,255,255, 0)',
           title: {
-            text: '5月16日至5月31日世界累计被攻击数前十动态',
+            text: '5月14日至5月29日世界累计被攻击数前十动态',
             subtext: '',
             left: 'center',
             top: 60,

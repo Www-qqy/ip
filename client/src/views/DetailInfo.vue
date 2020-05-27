@@ -20,35 +20,41 @@
       <img class="detail-info-info-border" src="../assets/detail-info-border.png" alt />
       <el-form ref="form" :model="form">
         <el-form-item label="攻击源IP地址 ：">
-          <el-form-item v-model="form.name" label="64.38.64.0"></el-form-item>
+          <el-form-item v-model="form.name" :label="params[0]?params[0].ip:'Not Found'"></el-form-item>
         </el-form-item>
 
         <el-form-item label="攻击源位置 ：">
-          <el-form-item v-model="form.name" label="美国加州"></el-form-item>
+          <el-form-item
+            v-model="form.name"
+            :label="params[0]?params[0].country+params[0].province:'Not Found'"
+          ></el-form-item>
         </el-form-item>
         <el-form-item label="攻击源经度 ：">
-          <el-form-item v-model="form.name" label="-118.1535"></el-form-item>
+          <el-form-item v-model="form.name" :label="params[0]?params[0].longitude+'':'Not Found'"></el-form-item>
         </el-form-item>
         <el-form-item label="攻击源纬度 ：">
-          <el-form-item v-model="form.name" label="33.9761"></el-form-item>
+          <el-form-item v-model="form.name" :label="params[0]?params[0].latitude+'':'Not Found'"></el-form-item>
         </el-form-item>
         <el-form-item label="被攻击源IP ：">
-          <el-form-item v-model="form.name" label="116.234.222.36"></el-form-item>
+          <el-form-item v-model="form.name" :label="params[1]?params[1].ip:'Not Found'"></el-form-item>
         </el-form-item>
         <el-form-item label="被攻击源位置 ：">
-          <el-form-item v-model="form.name" label="中国上海"></el-form-item>
+          <el-form-item
+            v-model="form.name"
+            :label="params[1]?params[1].country+params[1].province:'Not Found'"
+          ></el-form-item>
         </el-form-item>
         <el-form-item label="被攻击源经度 ：">
-          <el-form-item v-model="form.name" label="121.3997 "></el-form-item>
+          <el-form-item v-model="form.name" :label="params[1]?params[1].longitude+'':'Not Found'"></el-form-item>
         </el-form-item>
         <el-form-item label="被攻击源纬度 ：">
-          <el-form-item v-model="form.name" label="31.0456"></el-form-item>
+          <el-form-item v-model="form.name" :label="params[1]?params[1].latitude+'':'Not Found'"></el-form-item>
         </el-form-item>
         <el-form-item label="被攻击时间 ：">
-          <el-form-item v-model="form.name" label="2020-05-14 20:02:03"></el-form-item>
+          <el-form-item v-model="form.name" :label="params[2]?new Date(params[2])+'':'Not Found'"></el-form-item>
         </el-form-item>
         <el-form-item label="被攻击方式 ：">
-          <el-form-item v-model="form.name" label="病毒攻击"></el-form-item>
+          <el-form-item v-model="form.name" :label="params[3]"></el-form-item>
         </el-form-item>
       </el-form>
     </div>
@@ -62,6 +68,7 @@ import jpgPath from '../assets/data-info-button.png'
 export default {
   data() {
     return {
+      params: [],
       vedioCanPlay: false,
       fixStyle: '',
       form: {
@@ -75,6 +82,8 @@ export default {
 
     this.PATH_TO_JPG = jpgPath
     this.PATH_TO_MP4 = mp4Path
+    this.params = this.$route.params.data
+    console.log('详情页面', this.$route.params.data)
   },
   destroyed() {
     window.removeEventListener('hashchange', this.afterQRScan)
@@ -153,13 +162,13 @@ export default {
 .detail-info-button-vedio-border {
   position: absolute;
   width: 40%;
-  height: 70%;
+  height: 75%;
   top: 14%;
   left: 4%;
 }
 .detail-info-info-border {
   position: absolute;
-  height: 70%;
+  height: 75%;
   width: 40%;
   top: 14%;
   right: 5%;

@@ -16,8 +16,8 @@ export default {
   enter(data) {
     return request.post('/attack', data)
   },
-  getAttackPointById(id) {
-    var path = '/attack-point/' + id
+  getAttackByAttack(attack) {
+    var path = '/attack/' + attack
     console.log('00000', request.get(path))
     return request.get(path)
   }

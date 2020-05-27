@@ -1,5 +1,5 @@
 const { Attack } = require('../models')
-const config = require('../config')
+// const config = require('../config')
 
 module.exports = {
   async enter(req, res) {
@@ -18,13 +18,13 @@ module.exports = {
       })
     }
   }, //增加
-  async getUserById(req, res) {
+  async getAttackByAttack(req, res) {
     try {
       console.log(req.body)
-      const user = await User.findByPk(req.params.id)
-      if (user) {
+      const attack = await Attack.findByPk(req.params.attack)
+      if (attack) {
         res.status(201).send({
-          user,
+          attack,
         })
       } else {
         res.status(400).send({

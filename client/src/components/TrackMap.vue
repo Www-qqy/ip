@@ -12,11 +12,19 @@
 
       <div class="track-echarts-info-green track-echarts-color">
         <div class="track-echarts-info-green-img track-echarts-color-img"></div>
-        <div class="track-echarts-info-green-text">&lt;{{longitude0}}</div>
+        <div class="track-echarts-info-green-text">&lt;80</div>
       </div>
     </div>
     <div class="echarts">
       <div :class="className" :id="id" :style="{ height: height, width: width }" ref="myEchart"></div>
+    </div>
+    <div class="float-data-container">
+      <div
+        :class="list[i]&&list[i][1]&&list[i][1][1]&&list[i][1][1].ip==='192.168.0.126' ?'red-float-data':'float-data'"
+        v-for="(item,i) in list"
+        :key="i"
+        @click="dataToDetail(list[i]?list[i][1]:'no signal')"
+      >{{list[i]?list[i][0]:'no signal'}}</div>
     </div>
   </div>
 </template>
@@ -48,6 +56,8 @@ export default {
   },
   data() {
     return {
+      list: [[1111111, [[], { ip: '192.168.0.126' }]]],
+      attack: 0,
       attackedId: 0,
       attackId: 0,
       attackForm: [],
@@ -502,13 +512,17 @@ export default {
       series: series
     })
     setInterval(function() {
+      that.attack += 1
       that.randomId()
       var num = Math.floor(Math.random() * 4)
+      var time = new Date().getTime()
+      var mean = that.meansForm[num]
       AttackService.enter({
+        attack: that.attack,
         attacker_id: that.attackId,
         suffer_id: that.attackedId,
-        time: that.getTime(),
-        means: that.meansForm[num]
+        time: time,
+        means: mean
       })
 
       console.log(res, geoCoordMap, BJData)
@@ -517,12 +531,24 @@ export default {
         that.getAttackPointById(that.attackedId)
       ]).then(value => {
         console.log('***********************', value)
-
+        if (res.length === 10) {
+          res = []
+        }
         res.push([
-          { coord: value[0], value: 100 }, // 上海
-          { coord: value[1] }
+          { coord: [value[0].longitude, value[0].latitude], value: 100 }, // 上海
+          { coord: [value[1].longitude, value[1].latitude] }
         ])
-
+        if (that.list.length === 10) {
+          that.list = []
+        }
+        that.list.push([
+          value[0].country +
+            value[0].province +
+            ' >>>> ' +
+            value[1].country +
+            value[1].province,
+          [value[0], value[1], time, mean]
+        ])
         //       把配置和数据放这里
         ;[['上海', BJData]].forEach(function(item, i) {
           series.push({
@@ -554,10 +580,17 @@ export default {
         })
         //   var svg ='path://     M32.597,9.782 L30.475,11.904 C30.085,12.294 29.452,12.294 29.061,11.904 C28.671,11.513 28.671,10.880 29.061,10.489 L31.182,8.368 C31.573,7.978 32.206,7.978 32.597,8.368 C32.987,8.759 32.987,9.392 32.597,9.782 ZM30.000,30.500 C30.000,31.328 29.329,32.000 28.500,32.000 L5.500,32.000 C4.672,32.000 4.000,31.328 4.000,30.500 C4.000,29.672 4.672,29.000 5.500,29.000 L8.009,29.000 L8.009,18.244 C8.009,13.139 12.034,9.000 17.000,9.000 C21.966,9.000 25.992,13.139 25.992,18.244 L25.992,29.000 L28.500,29.000 C29.329,29.000 30.000,29.672 30.000,30.500 ZM17.867,14.444 L13.000,22.000 L17.000,22.000 L17.133,26.556 L21.000,20.000 L17.000,20.000 L17.867,14.444 ZM25.221,6.327 C25.033,6.846 24.459,7.113 23.940,6.924 C23.421,6.735 23.153,6.162 23.342,5.643 L24.368,2.823 C24.557,2.304 25.131,2.037 25.650,2.226 C26.169,2.415 26.436,2.989 26.248,3.508 L25.221,6.327 ZM17.000,5.000 C16.448,5.000 16.000,4.552 16.000,4.000 L16.000,1.000 C16.000,0.448 16.448,0.000 17.000,0.000 C17.552,0.000 18.000,0.448 18.000,1.000 L18.000,4.000 C18.000,4.552 17.552,5.000 17.000,5.000 ZM10.028,7.197 C9.509,7.386 8.935,7.118 8.746,6.599 L7.720,3.780 C7.532,3.261 7.799,2.687 8.318,2.498 C8.837,2.309 9.411,2.577 9.600,3.096 L10.626,5.915 C10.815,6.434 10.547,7.008 10.028,7.197 ZM3.354,12.268 L1.232,10.146 C0.842,9.756 0.842,9.123 1.232,8.732 C1.623,8.342 2.256,8.342 2.646,8.732 L4.768,10.854 C5.158,11.244 5.158,11.877 4.768,12.268 C4.377,12.658 3.744,12.658 3.354,12.268 Z'
       })
-    }, 300000000)
+    }, 30000000)
   },
 
   methods: {
+    dataToDetail(data) {
+      console.log(data)
+      this.$router.push({
+        name: 'DetailInfo',
+        params: { data }
+      })
+    },
     getTime() {
       var yy = new Date().getFullYear()
       var mm = new Date().getMonth() + 1
@@ -594,10 +627,10 @@ export default {
       } catch (error) {}
     },
     randomId() {
-      this.attackId = Math.floor(Math.random() * 6) + 1
-      this.attackedId = Math.floor(Math.random() * 6) + 1
+      this.attackId = Math.floor(Math.random() * 4) + 1
+      this.attackedId = Math.floor(Math.random() * 4) + 1
       while (this.attackId === this.attackedId) {
-        this.attackedId = Math.floor(Math.random() * 6) + 1
+        this.attackedId = Math.floor(Math.random() * 4) + 1
       }
     },
     async getAttackPointById(id) {
@@ -605,10 +638,13 @@ export default {
         const response = await AttackPointService.getAttackPointById(id)
         console.log('trying', response.data, 'kkk', id === this.attackedId)
         this.longitude0 = response.data.attackPoint.longitude
-        return [
-          response.data.attackPoint.longitude,
-          response.data.attackPoint.latitude
-        ]
+        return response.data.attackPoint
+      } catch (error) {}
+    },
+    async getAttackByAttack(attack) {
+      try {
+        const response = await AttackService.getAttackByAttack(attack)
+        console.log(response)
       } catch (error) {}
     },
     trackToDataInfo() {
@@ -632,7 +668,7 @@ export default {
   z-index: 101;
   width: 110px;
   position: absolute;
-  bottom: 9%;
+  top: 80vh;
   left: 1%;
   display: flex;
   flex-direction: column;
@@ -679,12 +715,7 @@ export default {
   height: 100vh;
   width: 100%;
 }
-.track-login-user {
-  width: 140px;
-  color: rgba(255, 255, 255, 0.685);
 
-  float: right;
-}
 .info-bg {
   width: 100%;
 }
@@ -702,5 +733,60 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.float-data {
+  z-index: 100000;
+  width: 300px;
+  height: 50px;
+  color: rgb(130, 245, 239);
+  font-size: 16px;
+  margin-left: -20px;
+  position: relative;
+  line-height: 50px;
+  animation: 10s linear 1s running slidein;
+}
+.red-float-data {
+  z-index: 100000;
+  width: 300px;
+  height: 50px;
+  color: red;
+  margin-top: 5px;
+  border: solid 1px rgb(150, 0, 0);
+  border-radius: 25px;
+  font-size: 16px;
+  margin-left: -20px;
+  line-height: 50px;
+  position: relative;
+  animation: 10s linear 1s running slideinred;
+}
+@keyframes slidein {
+  from {
+    margin-left: -20px;
+    color: rgb(130, 245, 239);
+  }
+  to {
+    margin-left: 100%;
+    color: rgb(157, 187, 8);
+  }
+}
+@keyframes slideinred {
+  from {
+    margin-left: -20px;
+    color: rgb(240, 12, 12);
+    border: solid 1px rgb(150, 0, 0);
+    border-radius: 25px;
+  }
+  to {
+    margin-left: 100%;
+    color: rgb(248, 190, 0);
+    border: solid 1px rgb(243, 168, 6);
+    border-radius: 25px;
+  }
+}
+.float-data-container {
+  width: 210vh;
+  height: 70vh;
+  background-color: rgb(0, 2, 31);
 }
 </style>

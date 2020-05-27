@@ -18,13 +18,6 @@
     </div>
     <el-button
       type="primary"
-      icon="el-icon-arrow-left"
-      class="track-lr-button track-left-button"
-      circle
-      @click="trackToDataInfo"
-    ></el-button>
-    <el-button
-      type="primary"
       icon="el-icon-arrow-right"
       class="track-lr-button track-right-button"
       circle
@@ -90,7 +83,7 @@ export default {
 }
 .track-lr-button {
   position: absolute;
-  top: 46%;
+  top: 30%;
   transform: translate(0, -50%);
   z-index: 106;
   width: 80px;
@@ -126,18 +119,11 @@ export default {
   line-height: 60px;
 }
 
-.track-login-user {
-  width: 140px;
-  color: rgba(255, 255, 255, 0.685);
-
-  float: right;
-}
-
 .el-icon-user {
   color: rgba(255, 255, 255, 0.651);
   position: absolute;
   float: right;
-  right: 130px;
+  right: 180px;
   top: 50%;
   transform: translate(0, -50%);
   background-color: rgb(11, 51, 94, 0.8);
@@ -147,6 +133,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.track-login-user {
+  width: 180px;
+  color: rgba(255, 255, 255, 0.685);
+
+  float: right;
 }
 .el-dropdown-link {
   cursor: pointer;

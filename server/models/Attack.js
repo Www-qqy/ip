@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   class Model extends Sequelize.Model {}
   Model.init(
     {
+      attack: { type: DataTypes.INTEGER },
       attacker_id: {
         type: DataTypes.STRING,
       },
