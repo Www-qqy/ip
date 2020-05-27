@@ -1,7 +1,7 @@
 
 <template>
   <div class="data-info">
-    <img class="xxx-bg" src="../assets/飘萍加文字.jpg" />
+    <img class="xxx-bg" src="../assets/信息飘屏.jpg" />
     <el-button
       type="primary"
       icon="el-icon-arrow-right"

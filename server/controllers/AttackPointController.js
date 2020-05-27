@@ -18,6 +18,16 @@ module.exports = {
       })
     }
   }, //增加
+  // getAttackPointById(req, res) {
+  //   const attackPoint = AttackPoint.findByPk(req.params.id)
+  //   if (attackPoint) {
+  //     console.log('找到了', attackPoint)
+  //     res.status(201).send({
+  //       code: 201,
+  //       attackPoint,
+  //     })
+  //   }
+  // },
   async getAttackPointById(req, res) {
     try {
       console.log('haha', req.body)

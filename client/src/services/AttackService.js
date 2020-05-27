@@ -14,7 +14,7 @@ export default {
   },
   admin() {},
   enter(data) {
-    return request.post('/attack-point', data)
+    return request.post('/attack', data)
   },
   getAttackPointById(id) {
     var path = '/attack-point/' + id

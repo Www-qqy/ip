@@ -5,21 +5,18 @@
         <div class="track-echarts-info-red-img track-echarts-color-img"></div>
         <div class="track-echarts-info-red-text">>120</div>
       </div>
-      <div class="track-echarts-info-yellow track-echarts-color">
+      <div class="track-echarts-info-yellow track-echarts-color" @click="getTwoAttackPoint">
         <div class="track-echarts-info-yellow-img track-echarts-color-img"></div>
         <div class="track-echarts-info-yellow-text">80~120</div>
       </div>
 
       <div class="track-echarts-info-green track-echarts-color">
         <div class="track-echarts-info-green-img track-echarts-color-img"></div>
-        <div class="track-echarts-info-green-text">&lt;80</div>
+        <div class="track-echarts-info-green-text">&lt;{{longitude0}}</div>
       </div>
     </div>
     <div class="echarts">
       <div :class="className" :id="id" :style="{ height: height, width: width }" ref="myEchart"></div>
-      <!-- <Title :title="title"></Title>
-      <Search :placeholder="placeholder" :find="find" @listenSearch="searchItem" @listenAdd="addNew" @listenLeadIng="leadingItem"></Search>-->
-      <!-- <div id="provinceChart" class="charts" ref="myEchart1" style="height:400px;"></div> -->
     </div>
   </div>
 </template>
@@ -50,6 +47,13 @@ export default {
   },
   data() {
     return {
+      attackedId: 0,
+      attackId: 0,
+      attackForm: [],
+      longitude0: 0,
+      longitude1: 0,
+      latitude0: 0,
+      latitude1: 0,
       error: '',
       loading: false,
       attackPointForm: {
@@ -69,6 +73,10 @@ export default {
     this.$nextTick(() => {
       this.initChart()
     })
+    // setInterval(function() {
+    //   alert('aaaaaaaaa')
+    // }, 200)
+    // 1000为1秒钟
     //       this.chinaConfigure();
   },
   befoblueestroy() {
@@ -99,6 +107,33 @@ export default {
         console.log(response)
       } catch (error) {}
     },
+    randomId() {
+      this.attackId = Math.floor(Math.random() * 6) + 1
+      this.attackedId = Math.floor(Math.random() * 6) + 1
+      while (this.attackId === this.attackedId) {
+        this.attackedId = Math.floor(Math.random() * 6) + 1
+      }
+    },
+    getTwoAttackPoint() {
+      this.attackForm = []
+      this.randomId()
+      console.log(this.attackId, this.attackedId, '随机数')
+      const response = AttackPointService.getAttackPointById(this.attackId)
+      console.log(response)
+      this.getAttackPointById(this.attackId).then(value => {
+        console.log('***********************', value)
+        this.longitude0 = value
+        console.log(this.longitude0)
+      })
+    },
+    async getAttackPointById(id) {
+      try {
+        const response = await AttackPointService.getAttackPointById(id)
+        console.log('trying', response.data, 'kkk', id === this.attackedId)
+        this.longitude0 = response.data.attackPoint.longitude
+        return response.data.attackPoint.longitude
+      } catch (error) {}
+    },
     trackToDataInfo() {
       this.$router.push('/data-info')
     },
@@ -106,48 +141,53 @@ export default {
       this.$router.push('/data-analyze')
     },
     initChart() {
+      // this.getTwoAttackPoint()
       this.chart = echarts.init(this.$refs.myEchart)
       window.onresize = echarts.init(this.$refs.myEchart).resize
+      var that = this
+      var res = []
       var convertData = function(data) {
-        var res = []
-        for (var i = 0; i < data.length; i++) {
-          var dataItem = data[i]
-          var fromCoord = geoCoordMap[dataItem[0].name]
-          var toCoord = geoCoordMap[dataItem[1].name]
-          if (fromCoord && toCoord) {
-            res.push([
-              {
-                coord: fromCoord,
-                value: dataItem[0].value
-              },
-              {
-                coord: toCoord
-              }
-            ])
-          }
-        }
+        that.randomId()
+        that.getAttackPointById(that.attackId).then(value => {
+          console.log('***********************', value)
+          res = [
+            [
+              { coord: [-87.801833, 41.870975], value: 100 }, // 上海
+              { coord: [-4.388361, 11.186148] }
+            ],
+            [
+              { coord: [-118.24311, 34.052713], value: 100 },
+              { coord: [-4.388361, 11.186148] }
+            ]
+          ]
+          res.push([
+            { coord: [-4.62829, 7.72415], value: 100 },
+            { coord: [-1.657222, 51.886863] }
+          ])
+          res[0][0].coord[0] = -87.801833
+          res[0][0].coord[1] = 41.870975 // 美国芝加哥
+        })
+        // that.getTwoAttackPoint()
+        // var form = that.attackForm
+        // console.log('00', form)
+        // var longitude0 = that.attackForm[0] ? that.attackForm[0].longitude : 0
+        // var latitude0 = that.attackForm[0] ? that.attackForm[0].latitude : 0
+        // var longitude1 = that.attackForm[1] ? that.attackForm[1].longitude : 0
+        // var latitude1 = that.attackForm[1] ? that.attackForm[1].latitude : 0
+        // var attackArray = [longitude0, latitude0]
+        // var attackedArray = [longitude1, latitude1]
+        // res.push([{ coord: attackArray, value: 100 }, { coord: attackedArray }])
+        // console.log(that.attackId)
+        // var timer = null
+        // clearInterval(timer)
+        // timer = setInterval(() => {
+
+        // }, 9000000)
+        console.log('最终res', res)
         return res
       }
-      // var convertData2 = function(data) {
-      //   var res = []
-      //   for (var i = 0; i < data.length; i++) {
-      //     var dataItem = data[i]
-      //     var fromCoord = geoCoordMap[dataItem[1].name]
-      //     var toCoord = geoCoordMap[dataItem[0].name]
-      //     if (fromCoord && toCoord) {
-      //       res.push([
-      //         {
-      //           coord: fromCoord,
-      //           value: dataItem[0].value
-      //         },
-      //         {
-      //           coord: toCoord
-      //         }
-      //       ])
-      //     }
-      //   }
-      //   return res
-      // }
+      console.log(convertData())
+
       //       把配置和数据放这里
       var series = []
       function randomData() {
@@ -400,138 +440,133 @@ export default {
           }
         ]
       ]
-      ;[['上海', BJData]].forEach(function(item, i) {
-        series.push(
-          {
-            name: '攻击线1',
-            type: 'lines',
-            zlevel: 2,
-            effect: {
-              show: true,
-              color: '#0bc7f3',
-              period: 4, //     箭头指向速度，值越小速度越快
-              trailLength: 0.1, //     特效尾迹长度[0,1]值越大，尾迹越长重
-              symbol: 'arrow', //     箭头图标
-              symbolSize: 2.5 //     图标大小
-            },
-            lineStyle: {
-              normal: {
+      that.getAttackPointById(that.attackId).then(value => {
+        console.log('***********************', value)
+        var res = [
+          [
+            { coord: [-87.801833, 41.870975], value: 100 }, // 上海
+            { coord: [-4.388361, 11.186148] }
+          ],
+          [
+            { coord: [-118.24311, 34.052713], value: 100 },
+            { coord: [-4.388361, 11.186148] }
+          ]
+        ]
+        ;[['上海', BJData]].forEach(function(item, i) {
+          series.push(
+            {
+              name: '攻击线1',
+              type: 'lines',
+              zlevel: 2,
+              effect: {
+                show: true,
                 color: '#0bc7f3',
-                width: 0, //     尾迹线条宽度
-                opacity: 0.1, //     尾迹线条透明度
-                curveness: 0.1 //     尾迹线条曲直度
-              }
-            },
-            data: convertData(item[1])
-          },
-          // {
-          //   name: '攻击线2',
-          //   type: 'lines',
-          //   zlevel: 2,
-          //   effect: {
-          //     show: false,
-          //     color: '#FF6A6A',
-          //     period: 9, //     箭头指向速度，值越小速度越快
-          //     trailLength: 0.5, //     特效尾迹长度[0,1]值越大，尾迹越长重
-          //     symbol: 'arrow', //     箭头图标
-          //     symbolSize: 2.5 //     图标大小
-          //   },
-          //   lineStyle: {
-          //     normal: {
-          //       color: '#FF6A6A',
-          //       width: 1, //     尾迹线条宽度
-          //       opacity: 0, //     尾迹线条透明度
-          //       curveness: 0.3 //     尾迹线条曲直度
-          //     }
-          //   },
-          //   data: convertData2(item[1])
-          // },
-          {
-            type: 'effectScatter',
-            coordinateSystem: 'geo',
-            zlevel: 2,
-            rippleEffect: {
-              //     涟漪特效
-              period: 5, //     动画时间，值越小速度越快
-              brushType: 'stroke', //     波纹绘制方式 stroke, fill
-              scale: 6 //     波纹圆环最大限制，值越大波纹越大
-            },
-            label: {
-              normal: {
-                show: true,
-                position: 'right', //     显示位置
-                offset: [5, 0], //     偏移设置
-                formatter: '{b}' //     圆环显示文字
+                period: 4, //     箭头指向速度，值越小速度越快
+                trailLength: 0.1, //     特效尾迹长度[0,1]值越大，尾迹越长重
+                symbol: 'arrow', //     箭头图标
+                symbolSize: 2.5 //     图标大小
               },
-              emphasis: {
-                show: true,
-                color: '#FF6A6A'
-              }
-            },
-            symbol: 'circle',
-            symbolSize: function(val) {
-              return 4 + val[2] / 1000 //     圆环大小
-            },
-            itemStyle: {
-              normal: {
-                show: true
+              lineStyle: {
+                normal: {
+                  color: '#0bc7f3',
+                  width: 0, //     尾迹线条宽度
+                  opacity: 0.1, //     尾迹线条透明度
+                  curveness: 0.1 //     尾迹线条曲直度
+                }
               },
-              emphasis: {
-                show: true,
-                color: '#FF6A6A'
-              }
+
+              data: res
             },
-            data: item[1].map(function(dataItem) {
-              return {
-                name: dataItem[0].name,
-                value: geoCoordMap[dataItem[0].name].concat([dataItem[0].value])
-              }
-            })
-          },
-          //     被攻击点
-          {
-            type: 'scatter',
-            coordinateSystem: 'geo',
-            zlevel: 2,
-            rippleEffect: {
-              period: 4,
-              brushType: 'stroke',
-              scale: 4
-            },
-            label: {
-              normal: {
-                show: true,
-                color: '#942b40', //     上海文字
-                position: 'right',
-                formatter: '{b}'
+            {
+              type: 'effectScatter',
+              coordinateSystem: 'geo',
+              zlevel: 2,
+              rippleEffect: {
+                //     涟漪特效
+                period: 5, //     动画时间，值越小速度越快
+                brushType: 'stroke', //     波纹绘制方式 stroke, fill
+                scale: 6 //     波纹圆环最大限制，值越大波纹越大
               },
-              emphasis: {
-                show: true,
-                color: '#FF6A6A'
-              }
-            },
-            symbol: 'pin',
-            symbolSize: 20,
-            itemStyle: {
-              normal: {
-                show: true,
-                color: '#942b40' //     上海图标
+              label: {
+                normal: {
+                  show: true,
+                  position: 'right', //     显示位置
+                  offset: [5, 0], //     偏移设置
+                  formatter: '{b}' //     圆环显示文字
+                },
+                emphasis: {
+                  show: true,
+                  color: '#FF6A6A'
+                }
               },
-              emphasis: {
-                show: true,
-                color: '#FF6A6A'
-              }
+              symbol: 'circle',
+              symbolSize: function(val) {
+                return 4 + val[2] / 1000 //     圆环大小
+              },
+              itemStyle: {
+                normal: {
+                  show: true
+                },
+                emphasis: {
+                  show: true,
+                  color: '#FF6A6A'
+                }
+              },
+              data: item[1].map(function(dataItem) {
+                return {
+                  name: dataItem[0].name,
+                  value: geoCoordMap[dataItem[0].name].concat([
+                    dataItem[0].value
+                  ])
+                }
+              })
             },
-            data: [
-              {
-                name: item[0],
-                value: geoCoordMap[item[0]].concat([100]),
-                visualMap: false
-              }
-            ]
-          }
-        )
+            //     被攻击点
+            {
+              type: 'scatter', // 气泡图
+              coordinateSystem: 'geo',
+              zlevel: 2,
+              rippleEffect: {
+                period: 4,
+                brushType: 'stroke',
+                scale: 4
+              },
+              label: {
+                normal: {
+                  show: true,
+                  color: '#942b40', //     上海文字
+                  position: 'right',
+                  formatter: '{b}'
+                },
+                emphasis: {
+                  show: true,
+                  color: '#FF6A6A'
+                }
+              },
+              symbol: 'pin',
+              symbolSize: 20,
+              itemStyle: {
+                normal: {
+                  show: true,
+                  color: '#942b40' //     上海图标
+                },
+                emphasis: {
+                  show: true,
+                  color: '#FF6A6A'
+                }
+              },
+              data: [
+                {
+                  name: item[0],
+                  value: geoCoordMap[item[0]].concat([100]),
+                  visualMap: false
+                }
+              ]
+            }
+          )
+        })
       })
+
       //   var svg ='path://     M32.597,9.782 L30.475,11.904 C30.085,12.294 29.452,12.294 29.061,11.904 C28.671,11.513 28.671,10.880 29.061,10.489 L31.182,8.368 C31.573,7.978 32.206,7.978 32.597,8.368 C32.987,8.759 32.987,9.392 32.597,9.782 ZM30.000,30.500 C30.000,31.328 29.329,32.000 28.500,32.000 L5.500,32.000 C4.672,32.000 4.000,31.328 4.000,30.500 C4.000,29.672 4.672,29.000 5.500,29.000 L8.009,29.000 L8.009,18.244 C8.009,13.139 12.034,9.000 17.000,9.000 C21.966,9.000 25.992,13.139 25.992,18.244 L25.992,29.000 L28.500,29.000 C29.329,29.000 30.000,29.672 30.000,30.500 ZM17.867,14.444 L13.000,22.000 L17.000,22.000 L17.133,26.556 L21.000,20.000 L17.000,20.000 L17.867,14.444 ZM25.221,6.327 C25.033,6.846 24.459,7.113 23.940,6.924 C23.421,6.735 23.153,6.162 23.342,5.643 L24.368,2.823 C24.557,2.304 25.131,2.037 25.650,2.226 C26.169,2.415 26.436,2.989 26.248,3.508 L25.221,6.327 ZM17.000,5.000 C16.448,5.000 16.000,4.552 16.000,4.000 L16.000,1.000 C16.000,0.448 16.448,0.000 17.000,0.000 C17.552,0.000 18.000,0.448 18.000,1.000 L18.000,4.000 C18.000,4.552 17.552,5.000 17.000,5.000 ZM10.028,7.197 C9.509,7.386 8.935,7.118 8.746,6.599 L7.720,3.780 C7.532,3.261 7.799,2.687 8.318,2.498 C8.837,2.309 9.411,2.577 9.600,3.096 L10.626,5.915 C10.815,6.434 10.547,7.008 10.028,7.197 ZM3.354,12.268 L1.232,10.146 C0.842,9.756 0.842,9.123 1.232,8.732 C1.623,8.342 2.256,8.342 2.646,8.732 L4.768,10.854 C5.158,11.244 5.158,11.877 4.768,12.268 C4.377,12.658 3.744,12.658 3.354,12.268 Z'
 
       this.chart.setOption({
@@ -580,7 +615,7 @@ export default {
             }
           ],
           calculable: true
-        },
+        }, // 地图上文字的颜色
         geo: {
           map: 'world',
           show: true,

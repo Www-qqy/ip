@@ -2,20 +2,19 @@ const { Attack } = require('../models')
 const config = require('../config')
 
 module.exports = {
-  async register(req, res) {
+  async enter(req, res) {
     try {
       console.log('1111', req.body)
-      const user = await User.create(req.body)
+      const attack = await Attack.create(req.body)
       console.log('2222', req.body)
       res.status(201).send({
         code: 200,
-        user,
-        token: tokenSign(user),
+        attack,
       })
     } catch (error) {
       res.send({
         code: 400,
-        error: '该邮箱已注册',
+        error: '数据格式错误',
       })
     }
   }, //增加
