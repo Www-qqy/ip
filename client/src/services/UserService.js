@@ -12,8 +12,14 @@ export default {
   login(data) {
     return request.post('/users/login', data)
   },
-  admin() {},
-  enter(data) {
-    return request.post('/attack-point', data)
+  async getUserAll() {
+    const response = await request.get('/users')
+
+    return response.data
+  },
+  update(data) {
+    var path = '/users/' + data.email
+    console.log('****************', path)
+    return request.put(path, data)
   }
 }

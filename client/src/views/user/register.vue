@@ -42,7 +42,7 @@
         >注册</el-button>
         <div class="register-info">
           如果已注册账号请
-          <router-link :to="{ name: 'login' }">点击登录</router-link>
+          <router-link :to="{ name: 'Login' }">点击登录</router-link>
         </div>
       </el-form>
     </div>

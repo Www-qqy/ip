@@ -1,6 +1,16 @@
 const { Attack } = require('../models')
+const { AttackPoint } = require('../models')
 // const config = require('../config')
-
+Attack.belongsTo(AttackPoint, {
+  as: 'atk',
+  foreignKey: 'attacker_id',
+  targetKey: 'id',
+})
+Attack.belongsTo(AttackPoint, {
+  as: 'suf',
+  foreignKey: 'suffer_id',
+  targetKey: 'id',
+})
 module.exports = {
   async enter(req, res) {
     try {
@@ -18,10 +28,24 @@ module.exports = {
       })
     }
   }, //增加
-  async getAttackByAttack(req, res) {
+  async getAttackAll(req, res) {
     try {
       console.log(req.body)
-      const attack = await Attack.findByPk(req.params.attack)
+      const attack = await Attack.findAndCountAll({
+        attributes: ['id', 'time', 'means'],
+        include: [
+          {
+            model: AttackPoint,
+            as: 'atk',
+            attributes: ['country'],
+          },
+          {
+            model: AttackPoint,
+            as: 'suf',
+            attributes: ['country'],
+          },
+        ],
+      })
       if (attack) {
         res.status(201).send({
           attack,

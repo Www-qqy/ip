@@ -53,12 +53,35 @@ module.exports = {
       })
     }
   }, //查询
+  async getUserAll(req, res) {
+    try {
+      console.log(req.body)
+      const user = await User.findAll({
+        attributes: ['id', 'email', 'role'],
+      })
+      if (user) {
+        res.status(201).send({
+          user,
+        })
+      } else {
+        res.status(400).send({
+          code: 400,
+          error: '没有找到对应数据',
+        })
+      }
+    } catch (error) {
+      res.status(500).send({
+        code: 500,
+        error: '数据查询失败',
+      })
+    }
+  }, //全部查询
   async update(req, res) {
     try {
       console.log(req.body)
       const user = await User.update(req.body, {
         where: {
-          id: req.params.id,
+          email: req.params.email,
         },
       })
       res.status(200).send({

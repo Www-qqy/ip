@@ -16,9 +16,9 @@ export default {
   enter(data) {
     return request.post('/attack', data)
   },
-  getAttackByAttack(attack) {
-    var path = '/attack/' + attack
-    console.log('00000', request.get(path))
-    return request.get(path)
+  async getAttackAll() {
+    const response = await request.get('/attack')
+
+    return response.data
   }
 }

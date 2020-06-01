@@ -34,8 +34,8 @@ export default {
   data() {
     return {
       user: 'Admin',
-      email: '',
-      role: '',
+      email: '1111111111@qq.com',
+      role: 'professional-user',
       ip: '192.168.0.126'
     }
   },
